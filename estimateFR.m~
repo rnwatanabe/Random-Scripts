@@ -14,13 +14,13 @@
 %
 %   gaussianSD: float, standard deviation of the gaussian.
 %
-%   tf: float, time to end the FR signal, in seconds.
+%   tf: float, time to end the FR signal.
 %
 % Outputs:
 %
 %   FR: vector of floats, signal of the firing rate, in Hz.
 %
-%   t: vector of floats, time values in second corresponding to the FR signal.
+%   t: vector of floats, time values correspondent to the FR signal.
 
 
 function [FR, t] = estimateFR(spikeTimes, dt, gaussianSD, tf)
