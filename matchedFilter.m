@@ -27,7 +27,7 @@ for i = begin:length(x)-length(st)+begin
 end
 
 [pks,locs] = findpeaks(y,'MinPeakHeight',threshold*max(y));
-locs
+
 for i = 1:length(locs)
    matchedSignal(locs(i):locs(i)+length(st)-1)= st; 
 end
