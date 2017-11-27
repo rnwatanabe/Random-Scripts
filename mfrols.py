@@ -40,6 +40,7 @@ def mfrols(p, y, pho, s):
         y = yTemp
         print(y)
     if s == 0:
+        M = np.shape(p)[1]
         l = -1*np.ones((M))
         err = np.zeros((M))
         A = np.empty((M,M,1))
@@ -101,4 +102,4 @@ def mfrols(p, y, pho, s):
                 beta[:,j] = np.linalg.inv(np.squeeze(A[0:M0,0:M0,j]))@np.transpose(g[j,0:M0])
             else:
                 beta[:,j] = (np.squeeze(A[0:M0,0:M0,j])**-1)*g[j,0:M0]
-    return beta 
+    return beta  
