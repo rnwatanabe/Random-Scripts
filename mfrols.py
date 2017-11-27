@@ -1,23 +1,15 @@
 '''
 Implements the MFROLS algorithm (see page 97 from Billings, SA (2013)).
-
 % written by: Renato Naville Watanabe 
-
 % beta = mfrols(p, y, pho, s)
 % Inputs:
-
 %   p: matrix of floats, is the matrix of candidate terms.
 %   y: vector of floats, output signal.
 %   pho: float, stop criteria.
 %   s: integer, iteration step of the mfrols algorithm.
-
 % Output:
-
 %   beta: vector of floats, coefficients of the chosen terms.
-
 % Globals:
-
-
 %   l: vector of integers, indices of the chosen terms.
 %   err: vector of floats, the error reduction ratio of each chosen term.
 %   ESR: float, the sum of the individual error reduction ratios.
@@ -30,7 +22,6 @@ Implements the MFROLS algorithm (see page 97 from Billings, SA (2013)).
 def mfrols(p, y, pho, s):
     import numpy as np
     
-
     global l
     global err
     global ESR
@@ -38,6 +29,23 @@ def mfrols(p, y, pho, s):
     global q 
     global g 
     global M0
+    
+    if np.ndim(p) == 2:
+        pTemp = np.zeros((np.shape(p)[0],np.shape(p)[1],1))
+        pTemp[:,:,0] = p
+        p = pTemp
+        M = np.shape(p)[1]
+        l = -1*np.ones((M))
+        err = np.zeros((M))
+        A = np.empty((M,M,1))
+        q = np.empty_like(p)
+        g = np.empty((1,M))
+    if np.ndim(y) == 1:
+        yTemp = np.zeros((np.shape(y)[0],1))
+        yTemp[:,0] = y
+        y = yTemp
+        print(y)
+
 
     M = np.shape(p)[1]
     L = np.shape(p)[2]
@@ -59,8 +67,9 @@ def mfrols(p, y, pho, s):
                 ERR[j,m]=0   
 
     ## global variables assignment
-
+    print(ERR)
     ERR_m = np.mean(ERR, 0)
+    print(np.nonzero(ERR_m == np.max(ERR_m))[0])
     l[s] = np.nonzero(ERR_m == np.max(ERR_m))[0]
     err[s] = ERR_m[int(l[s])]
     for j in range(L):
@@ -80,11 +89,12 @@ def mfrols(p, y, pho, s):
         del gs
         beta = mfrols(p, y, pho, s)
     else:
-        M0 = s
-        s += 1
+        s += 1  
+        M0 = s              
         beta = np.empty((M0,L))
         for j in range(L):
-            print(M0)
-            beta[:,j] = np.linalg.inv(np.squeeze(A[0:M0,0:M0,j]))@np.transpose(g[j,0:M0])
-            
+            if s > 1:
+                beta[:,j] = np.linalg.inv(np.squeeze(A[0:M0,0:M0,j]))@np.transpose(g[j,0:M0])
+            else:
+                beta[:,j] = (np.squeeze(A[0:M0,0:M0,j])**-1)*g[j,0:M0]
     return beta  
