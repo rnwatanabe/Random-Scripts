@@ -7,45 +7,39 @@ Implements the MFROLS algorithm (see page 97 from Billings, SA (2013)).
 %   y: vector of floats, output signal.
 %   pho: float, stop criteria.
 %   s: integer, iteration step of the mfrols algorithm.
+%   l: vector of integers, indices of the chosen terms.M = np.shape(p)[1]; l = -1*np.ones((M))
+%   err: vector of floats, the error reduction ratio of each chosen term. err = np.zeros((M))
+%   ESR: float, the sum of the individual error reduction ratios. Initial value eual 1.
+%   A: matrix of floats, auxiliary matrix in the orthogonalization process. A = np.empty((M,M,1))
+%   q: matrix of floats, matrix with each column being the terms orthogonalized by the Gram-Schmidt process. q = np.empty_like(p)
+%   g: vector of floats, auxiliary vector in the orthogonalization process. g = np.empty((1,M))
 % Output:
 %   beta: vector of floats, coefficients of the chosen terms.
-% Globals:
-%   l: vector of integers, indices of the chosen terms.
-%   err: vector of floats, the error reduction ratio of each chosen term.
-%   ESR: float, the sum of the individual error reduction ratios.
-%   A: matrix of floats, auxiliary matrix in the orthogonalization process. 
-%   q: matrix of floats, matrix with each column being the terms orthogonalized by the Gram-Schmidt process.
-%   g: vector of floats, auxiliary vector in the orthogonalization process.
-%   M0:	integer, number of chosen terms.
+%   l: vector of integers, indices of the chosen terms
+%   M0: number of chosen terms 
 '''
 
-def mfrols(p, y, pho, s):
+def mfrols(p, y, pho, s, ESR, l, err, A, q, g):
     import numpy as np
-    
-    global l
-    global err
-    global ESR
-    global A
-    global q 
-    global g 
-    global M0
     
     if np.ndim(p) == 2:
         pTemp = np.zeros((np.shape(p)[0],np.shape(p)[1],1))
         pTemp[:,:,0] = p
         p = pTemp
-    if np.ndim(y) == 1:
-        yTemp = np.zeros((np.shape(y)[0],1))
-        yTemp[:,0] = y
-        y = yTemp
-        print(y)
-    if s == 0:
         M = np.shape(p)[1]
         l = -1*np.ones((M))
         err = np.zeros((M))
         A = np.empty((M,M,1))
         q = np.empty_like(p)
         g = np.empty((1,M))
+
+    if np.ndim(y) == 1:
+        yTemp = np.zeros((np.shape(y)[0],1))
+        yTemp[:,0] = y
+        y = yTemp
+
+    
+        
 
 
     M = np.shape(p)[1]
@@ -67,10 +61,8 @@ def mfrols(p, y, pho, s):
             else:
                 ERR[j,m]=0   
 
-    ## global variables assignment
-    print(ERR)
+    
     ERR_m = np.mean(ERR, 0)
-    print(np.nonzero(ERR_m == np.max(ERR_m))[0])
     l[s] = np.nonzero(ERR_m == np.max(ERR_m))[0]
     err[s] = ERR_m[int(l[s])]
     for j in range(L):
@@ -88,18 +80,14 @@ def mfrols(p, y, pho, s):
         s += 1
         del qs 
         del gs
-        beta = mfrols(p, y, pho, s)
+        beta, l, M0 = mfrols(p, y, pho, s, ESR, l, err, A, q, g)
     else:
         s += 1  
         M0 = s              
         beta = np.empty((M0,L))
         for j in range(L):
             if s > 1:
-                print(M0)
-                print(np.shape(beta))
-                print(np.shape(np.linalg.inv(np.squeeze(A[0:M0,0:M0,j]))))
-                print(np.shape(np.transpose(g[j,0:M0])))
                 beta[:,j] = np.linalg.inv(np.squeeze(A[0:M0,0:M0,j]))@np.transpose(g[j,0:M0])
             else:
                 beta[:,j] = (np.squeeze(A[0:M0,0:M0,j])**-1)*g[j,0:M0]
-    return beta  
+    return beta, l, M0  
