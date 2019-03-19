@@ -66,7 +66,7 @@ def mfrols(p, y, pho, s, ESR, l, err, A, q, g):
     l[s] = np.nonzero(ERR_m == np.max(ERR_m))[0]
     err[s] = ERR_m[int(l[s])]
     for j in range(L):
-        for r in  range(s-1):
+        for r in  range(s):
             A[r, s, j] = (np.transpose(q[:,r,j])@p[:,int(l[s]),j])/(np.transpose(q[:,r,j])@q[:,r,j])    
         A[s, s, j] = 1
         q[:, s,j] = qs[:,int(l[s]),j]
