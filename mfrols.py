@@ -10,9 +10,9 @@ Implements the MFROLS algorithm (see page 97 from Billings, SA (2013)).
 %   l: vector of integers, indices of the chosen terms.M = np.shape(p)[1]; l = -1*np.ones((M))
 %   err: vector of floats, the error reduction ratio of each chosen term. err = np.zeros((M))
 %   ESR: float, the sum of the individual error reduction ratios. Initial value eual 1.
-%   A: matrix of floats, auxiliary matrix in the orthogonalization process. A = np.empty((M,M,1))
-%   q: matrix of floats, matrix with each column being the terms orthogonalized by the Gram-Schmidt process. q = np.empty_like(p)
-%   g: vector of floats, auxiliary vector in the orthogonalization process. g = np.empty((1,M))
+%   A: matrix of floats, auxiliary matrix in the orthogonalization process. A = np.zeros((M,M,1))
+%   q: matrix of floats, matrix with each column being the terms orthogonalized by the Gram-Schmidt process. q = np.zeros_like(p)
+%   g: vector of floats, auxiliary vector in the orthogonalization process. g = np.zeros((1,M))
 % Output:
 %   beta: vector of floats, coefficients of the chosen terms.
 %   l: vector of integers, indices of the chosen terms
