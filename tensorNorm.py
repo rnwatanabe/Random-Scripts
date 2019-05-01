@@ -1,4 +1,4 @@
-def tensorNorm(x, T):
+def tensorNorm(x, T = np.zeros((1))):
     '''
     norm = tensorNorm(x, T)
     
@@ -15,6 +15,9 @@ def tensorNorm(x, T):
     
     '''
     import numpy as np
+    
+    if T.all() == 0:
+        T = np.eye(len(x))
     
     norm  = 0
     for i in range(len(x)):
