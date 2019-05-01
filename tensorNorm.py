@@ -16,6 +16,6 @@ def tensorNorm(x, T):
     '''
     norm  = 0
     for i in range(len(x)):
-        for j in range(i,len(x)): 
+        for j in range(len(x)): 
             norm = norm + x[i]*x[j]*T[i,j]
     return norm
