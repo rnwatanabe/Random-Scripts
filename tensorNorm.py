@@ -14,8 +14,13 @@ def tensorNorm(x, T):
         -- norm: the norm of the vector x.
     
     '''
+    import numpy as np
+    
     norm  = 0
     for i in range(len(x)):
         for j in range(len(x)): 
             norm = norm + x[i]*x[j]*T[i,j]
+    
+    norm  = np.sqrt(norm)
+    
     return norm
