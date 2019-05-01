@@ -2,12 +2,12 @@ def tensorNorm(x, T):
     '''
     norm = tensorNorm(x, T)
     
-    Performs a dot product for non-orthogonal vector spaces.
+    Computes the Euclidean norm of a the vector x for non-orthogonal vector spaces.
     
     Inputs:
         -- x: the vector to have the norm computed.
             
-        -- T: the tensor matrix of the vector space.
+        -- T: the metric tensor of the vector space.
 
     Output:
         
