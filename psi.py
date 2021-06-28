@@ -1,12 +1,12 @@
 def psi(spikes, binsize=1):
     '''
-    PSI value as defined in as computed in Motor-Unit Synchronization Increases EMG Amplitude and Decreases Force Steadiness of Simulated Contractions
+    PSI (population synchrony index) value as defined in as computed in Motor-Unit Synchronization Increases EMG Amplitude and Decreases Force Steadiness of Simulated Contractions
     Wanxiang Yao, Rew J. Fuglevand, and Roger M. Enoka, Journal of Neurophysiology 2000 83:1, 441-452
 
     inputs:
-    spikes - numpy array. The first columns has the motor unit number and second column
+    spikes - numpy array. The first column has the motor unit number and second column
     has the spikes instants, in ms.
-    binsize- float number with the size of the bins, in ms
+    binsize- float number with the size of the bins, in ms. Default = 1 ms.
 
     outputs:
     psi - psi value 
