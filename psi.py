@@ -19,8 +19,8 @@ def psi(spikes, binsize=1):
     Nb = len(bins)
     m = spikes.shape[0]/Nb
     Nu = spikes[:,0].max()
-    nindep = Nb*np.exp(-m)
-    NCIindep = nindep
+    nindep = Nb*np.exp(-m)*(m**2)/2
+    NCIindep = nindep*1
     NCI = nx[2]
     
     for x in binsnx[3:-1]:
